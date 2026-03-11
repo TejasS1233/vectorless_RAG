@@ -36,7 +36,7 @@ class Neo4jRetriever:
 
     async def get_sub_sections(self, parent_id: str):
         query = """
-        MATCH (p:Section {node_id: $parent_id, doc_name: $doc_name})-[:HAS_SUBSECTION]->(s:Section)
+        MATCH (p:Section {node_id: $parent_id, doc_name: $doc_name})-[:HAS_SUBSECTION|REFERENCES]->(s:Section)
         RETURN s.node_id AS id, s.title AS title, s.summary AS summary, 
                s.start_index AS start_index, s.end_index AS end_index
         ORDER BY s.start_index

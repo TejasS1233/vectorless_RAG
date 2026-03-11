@@ -78,6 +78,11 @@ def ingest_json(json_path):
                 session.execute_write(process_node, root_node, parent_id=None, doc_name=doc_name)
                 
         print(f"Successfully ingested {doc_name} into Neo4j.")
+        
+        import asyncio
+        from src.database.reference_extractor import build_cross_references
+        asyncio.run(build_cross_references(doc_name))
+        
     except Exception as e:
         print(f"Error ingesting into Neo4j: {e}")
     finally:
