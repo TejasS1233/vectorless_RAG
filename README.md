@@ -7,6 +7,14 @@ This directory is an enhanced, production-ready adaptation of the [VectifyAI/Pag
 2. **Graph Traversal & Relationships**: If you want to connect sections across different documents (e.g. cross-referencing citations), you simply create a Neo4j `[:REFERENCES]` edge. The LLM can traverse these edges, giving you a true "reasoning" knowledge graph that basic JSON tree search cannot replicate.
 3. **Stand-alone Execution**: Everything you need to generate the PageIndex trees from PDFs/Markdown **and** ingest them into Neo4j is co-located in this directory and governed by `uv` for lightning-fast package management.
 
+## Graph Representation
+
+<img width="1360" height="682" alt="image" src="https://github.com/user-attachments/assets/9e1b9fb9-cbf3-4827-afb1-850f21048195" />
+
+The graph above demonstrates how the hierarchical structure of a PDF (e.g., `earthmover.pdf`) is persisted in Neo4j. 
+- The central **Document node** connects to all top-level chapters (e.g., *PRELIMINARIES*, *INTRODUCTION*) via `[:HAS_SECTION]` relationships.
+- Those topics recursively connect to their sub-sections via `[:HAS_SUBSECTION]` relationships.
+- During retrieval, the LLM starts at the center and explicitly chooses which paths to walk down based on the user's query, ignoring irrelevant branches and saving massive amounts of context tokens.
 ## Setup
 We strictly use `uv` for python package management as per local best practices.
 
